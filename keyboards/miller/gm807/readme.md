@@ -1,6 +1,6 @@
 # miller GM807
 
-miller GM807 Hotswap RGB
+![miller GM807 Hotswap RGB](https://imgur.com/wlTaS0c.png)
 
 Also sold as:
 
