@@ -1,5 +1,6 @@
 /* Copyright 2021 Harrison Chan (Xelus)
  * Copyright 2022 1Conan <me@1conan.com>
+ * Copyright 2025 naix07
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,18 +24,18 @@
 
 void keyboard_pre_init_kb(void)  {
     // turn off LEDs on two buttons near encoder
-    setPinOutput(LED_K4);
-    writePinLow(LED_K4);
-    setPinOutput(LED_K5);
-    writePinLow(LED_K5);
+    gpio_set_pin_output(LED_K4);
+    gpio_write_pin_low(LED_K4);
+    gpio_set_pin_output(LED_K5);
+    gpio_write_pin_low(LED_K5);
 
     // Turn off LED on the USB PORT of the USB hub
-    setPinOutput(LED_USB_PORT);
-    writePinLow(LED_USB_PORT);
+    gpio_set_pin_output(LED_USB_PORT);
+    gpio_write_pin_low(LED_USB_PORT);
 
     // Turn off output for encoder LEDs
-    setPinOutput(LED_ENCODER);
-    writePinLow(LED_ENCODER);
+    gpio_set_pin_output(LED_ENCODER);
+    gpio_write_pin_low(LED_ENCODER);
 
 #ifdef MODULE_ITON_BT
     iton_bt_init();
@@ -47,7 +48,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         switch(keycode) {
             case KEY_USB_LED:
-                writePin(LED_USB_PORT, !readPin(LED_USB_PORT));
+                gpio_write_pin(LED_USB_PORT, !gpio_read_pin(LED_USB_PORT));
                 break;
             case BT_PAIR:
 #ifdef MODULE_ITON_BT
