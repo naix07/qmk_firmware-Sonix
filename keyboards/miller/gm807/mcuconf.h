@@ -16,15 +16,14 @@
 
 #pragma once
 
-#define SN32_SPI_USE_SPI0 TRUE
+#ifdef BLUETOOTH_ITON_BT
+    #define SN32_SPI_USE_SPI0 TRUE
+#endif
 
 #undef SN32_PWM_USE_CT16B1
 #define SN32_PWM_USE_CT16B1 TRUE
 
 #undef SN32_PWM_NO_RESET
 #define SN32_PWM_NO_RESET TRUE
-
-#define ITON_BT_ENABLE_ACK TRUE
-#define PAL_USE_CALLBACKS TRUE
 
 #include_next <mcuconf.h>

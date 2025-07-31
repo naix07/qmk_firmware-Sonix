@@ -1,5 +1,6 @@
 /* Copyright 2021 Harrison Chan (Xelus)
  * Copyright 2022 1Conan <me@1conan.com>
+ * Copyright 2025 naix07
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,5 +49,6 @@
 #define DRIVER_LED_TOTAL 87
 
 #define MODULE_ITON_BT TRUE
+#define ITON_BT_ENABLE_ACK TRUE
 
 #define SHARED_MATRIX TRUE
