@@ -1,5 +1,6 @@
 /* Copyright 2021 Harrison Chan (Xelus)
  * Copyright 2022 1Conan <me@1conan.com>
+ * Copyright 2025 naix07
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,5 +26,6 @@ enum GM807_keycodes {
     BT_PRO1,
     BT_PRO2,
     BT_PRO3,
-    GM807_SAFE_RANGE,
+    BT_TOG,
+    RGB_BRI_CTRL_TOG
 };
