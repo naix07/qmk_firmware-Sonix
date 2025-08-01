@@ -69,15 +69,15 @@ bool control_brightness = false;
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (clockwise) {
         if (control_brightness) {
-            rgb_matrix_increase_val();
-        } else {
             tap_code(KC_VOLU);
+        } else {
+            rgb_matrix_increase_val();
         }
     } else {
         if (control_brightness) {
-            rgb_matrix_decrease_val();
-        } else {
             tap_code(KC_VOLD);
+        } else {
+            rgb_matrix_decrease_val();
         }
     }
 
