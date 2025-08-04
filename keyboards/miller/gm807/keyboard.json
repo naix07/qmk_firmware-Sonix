@@ -2,8 +2,8 @@
     "manufacturer": "miller",
     "keyboard_name": "GM807",
     "maintainer": "1Conan",
-    "bootloader_instructions": "While holding the ESC key, plug in USB connector",
-    "url": "https://example.com",
+    "bootloader_instructions": "Press Fn + Esc to enter bootloader mode.",
+    "tags": ["tkl", "wired", "bluetooth", "rgb", "hotswap", "encoder"],
     "usb": {
         "device_version": "1.0.0",
         "vid": "0x05AC",
@@ -22,6 +22,7 @@
     },
     "build": {"lto": true},
     "diode_direction": "COL2ROW",
+    "matrix_size": {"cols": 17, "rows": 6},
     "matrix_pins": {
         "cols": ["A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15", "B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"],
         "rows": ["C15", "D11", "D10", "D9", "D8", "D7"]

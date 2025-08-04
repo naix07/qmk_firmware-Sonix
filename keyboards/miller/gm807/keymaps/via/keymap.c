@@ -15,12 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "connection.h"
 #include "gm807.h"
 #include <quantum.h>
-#ifdef BLUETOOTH_ENABLE
-#include "outputselect.h"
-#endif
 
 #include QMK_KEYBOARD_H
 
@@ -30,22 +27,22 @@ enum layer_names {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
-/*      +--------------------------------------------------------------------------+----------------+
-        | ESC |  | F1 | F2 | F3 | F4 | | F5 | F6 | F7 | F8 | | F9| F10| F11| F12|  | |PSCR|????|PAUS|
-        +--------------------------------------------------------------------------+------|----|----|
-        |  ~  |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 |  0 |  - |  = | BACKSP | |INS |SCRL|PGUP|
-        +--------------------------------------------------------------------------+------|----|----|
-        |  TAB  |  Q |  W |  E |  R |  T |  Y |  U |  I |  O |  P |  [ |  ] |   \  | |DEL |END |PGDN|
-        +--------------------------------------------------------------------------+------|----|----|
-        | CAPSLCK  |  A |  S |  D |  F |  G |  H |  J |  K |  L | ; | ' |  RETURN  |  K5  | K4 |    |
-        +--------------------------------------------------------------------------+------|----|    |
-        | LSHIFT     |  Z |  X |  C |  V |  B |  N |  M | , | . |  / |   RSHIFT    |      | UP |    |
-        +--------------------------------------------------------------------------+------|----|----|
-        |LCTRL| LGUI| LALT |            SPACE            | RALT| RGUI | FN | RCTRL | |LFT |DWN |RGT |
-        +--------------------------------------------------------------------------+----------------+
-*/
-
+    /*
+     * ┌───┐   ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
+     * │Esc│   │F1 │F2 │F3 │F4 │ │F5 │F6 │F7 │F8 │ │F9 │F10│F11│F12│ │PSc│Scr│Pse│
+     * └───┘   └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┘
+     * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐ ┌───┬───┬───┐
+     * │ ` │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ - │ = │ Backsp│ │Ins│Hom│PgU│
+     * ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤ ├───┼───┼───┤
+     * │ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │ [ │ ] │  \  │ │Del│End│PgD│
+     * ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤ ├───┤───┼───┘
+     * │ Caps │ A │ S │ D │ F │ G │ H │ J │ K │ L │ ; │ ' │  Enter │ │ K5│ K4│
+     * ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────────┤ └───┼───┤
+     * │ Shift  │ Z │ X │ C │ V │ B │ N │ M │ , │ . │ / │    Shift │     │ ↑ │
+     * ├────┬───┴┬──┴─┬─┴───┴───┴───┴───┴───┴──┬┴───┼───┴┬────┬────┤ ┌───┼───┼───┐
+     * │Ctrl│GUI │Alt │                        │ Alt│ Fn │Menu│Ctrl│ │ ← │ ↓ │ → │
+     * └────┴────┴────┴────────────────────────┴────┴────┴────┴────┘ └───┴───┴───┘
+     */
     [_BASE] = LAYOUT(
         KC_ESC,           KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,      KC_PSCR, KC_SCRL, KC_PAUS,
         KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,     KC_INS,  KC_HOME, KC_PGUP,
@@ -59,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,     RM_SPDU, RM_SATU, RM_HUEU,
         BT_TOG,  BT_PRO1, BT_PRO2, BT_PRO3, _______, _______, _______, _______, _______, _______, BT_PAIR, _______, _______, _______,     RM_SPDD, RM_SATD, RM_HUED,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,     _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,                       RM_VALU,
+        _______, _______, _______, _______, _______, BT_BATT, _______, _______, _______, _______, _______,          _______,                       RM_VALU,
         _______, _______, _______,                   _______,                                     _______, _______, _______, _______,     RM_PREV, RM_VALD, RM_NEXT
     )
 };
@@ -89,7 +86,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case BT_TOG:
 #ifdef BLUETOOTH_ENABLE
             if (record->event.pressed) {
-                set_output(where_to_send() == OUTPUT_USB ? OUTPUT_BLUETOOTH : OUTPUT_USB);
+                connection_set_host(connection_get_host() == CONNECTION_HOST_USB ? CONNECTION_HOST_BLUETOOTH : CONNECTION_HOST_USB);
             }
 #endif
             return false;
@@ -105,9 +102,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         default:
             return true;
     }
-}
-
-void keyboard_post_init_user() {
-    gpio_write_pin_high(LED_USB_PORT);
-    gpio_write_pin_high(LED_K4);
 }

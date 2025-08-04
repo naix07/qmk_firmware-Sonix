@@ -27,5 +27,6 @@ enum GM807_keycodes {
     BT_PRO2,
     BT_PRO3,
     BT_TOG,
+    BT_BATT,
     RGB_BRI_CTRL_TOG
 };

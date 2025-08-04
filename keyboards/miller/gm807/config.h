@@ -18,10 +18,6 @@
 
 #pragma once
 
-/* key matrix size */
-#define MATRIX_ROWS 6
-#define MATRIX_COLS 17
-
 // Exta button LEDs
 #define LED_K4 A6
 #define LED_K5 A7
@@ -35,9 +31,6 @@
 // Resistor: RA42 (Value: ? (probably an 82Ω))
 #define LED_ENCODER D5
 
-/* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
-#define DEBOUNCE 0
-
 // RGB Matrix Config
 #define SN32F2XX_RGB_MATRIX_ROWS MATRIX_ROWS
 #define SN32F2XX_RGB_MATRIX_ROW_CHANNELS 3
@@ -46,9 +39,8 @@
 #define SN32F2XX_RGB_MATRIX_COLS MATRIX_COLS
 #define SN32F2XX_RGB_MATRIX_COL_PINS MATRIX_COL_PINS
 
-#define DRIVER_LED_TOTAL 87
-
 #define MODULE_ITON_BT TRUE
 #define ITON_BT_ENABLE_ACK TRUE
+#define ITON_BT_ENABLE_LED_STATE TRUE
 
 #define SHARED_MATRIX TRUE
