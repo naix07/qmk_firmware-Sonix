@@ -96,8 +96,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 gpio_write_pin(LED_K4, !control_brightness);
             }
             return false;
-        case QK_MAGIC_TOGGLE_GUI:
-            gpio_write_pin(LED_K5, keymap_config.no_gui);
+        case GU_TOGG:
+            if (record->event.pressed) {
+                keymap_config.no_gui = !keymap_config.no_gui;
+                gpio_write_pin(LED_K5, keymap_config.no_gui);
+            }
             return false;
         default:
             return true;
