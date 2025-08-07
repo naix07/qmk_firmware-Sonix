@@ -86,7 +86,6 @@ void iton_bt_enters_connection_state() {
 }
 
 void iton_bt_disconnected() {
-    connection_set_host(CONNECTION_HOST_USB);
     ev_disconnected = 1500;
     ev_connected    = 0;
     ev_pairing      = 0;
