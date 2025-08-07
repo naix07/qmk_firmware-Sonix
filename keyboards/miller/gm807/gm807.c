@@ -170,7 +170,7 @@ if (connection_get_host() == CONNECTION_HOST_BLUETOOTH) {
     }
 
     if (ev_pairing > 0) {
-        uint8_t profile_index = 34 + bt_profile;
+        uint8_t profile_index = 43;
         if ((current_time / 62) % 2 == 0) {
             rgb_matrix_set_color(profile_index, RGB_BLUE);
         } else {
