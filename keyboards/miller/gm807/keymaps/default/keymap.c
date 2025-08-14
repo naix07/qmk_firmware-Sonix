@@ -73,24 +73,6 @@ uint8_t blink_count = 0;
 uint16_t last_blink_time = 0;
 bool led_temp_state = false;
 
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (clockwise) {
-        if (control_brightness) {
-            tap_code(KC_VOLU);
-        } else {
-            rgb_matrix_increase_val();
-        }
-    } else {
-        if (control_brightness) {
-            tap_code(KC_VOLD);
-        } else {
-            rgb_matrix_decrease_val();
-        }
-    }
-
-    return false;
-}
-
 void connection_toggle_indicator(void) {
     blinking_caps = true;
     blink_count = 6; // on + off per blink
@@ -120,6 +102,27 @@ bool rgb_matrix_indicators_user(void) {
         }
     }
     return true;
+}
+
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (clockwise) {
+        if (control_brightness) {
+            tap_code(KC_VOLU);
+        } else {
+            rgb_matrix_increase_val();
+            if (rgb_matrix_get_val() == 255) {
+                connection_toggle_indicator();
+            }
+        }
+    } else {
+        if (control_brightness) {
+            tap_code(KC_VOLD);
+        } else {
+            rgb_matrix_decrease_val();
+        }
+    }
+
+    return false;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
