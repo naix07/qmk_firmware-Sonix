@@ -20,6 +20,7 @@
 #include <quantum.h>
 #include <connection.h>
 #include "SN32F240B.h"
+#include "rgb_matrix.h"
 #include "gm807.h"
 
 #ifdef MODULE_ITON_BT
@@ -139,7 +140,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     return process_record_user(keycode, record);
 }
 
-bool rgb_matrix_indicators_user() {
+bool rgb_matrix_indicators_kb() {
 
 #ifdef BLUETOOTH_ENABLE
 if (connection_get_host() == CONNECTION_HOST_BLUETOOTH) {
@@ -203,5 +204,6 @@ if (connection_get_host() == CONNECTION_HOST_BLUETOOTH) {
     }
 }
 #endif
+rgb_matrix_indicators_user();
 return false;
 }

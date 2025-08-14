@@ -15,9 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "color.h"
 #include "connection.h"
 #include "gm807.h"
+#include "gpio.h"
+#include "host.h"
 #include "keycodes.h"
+#include "led.h"
+#include "rgb_matrix.h"
 #include <quantum.h>
 
 #include QMK_KEYBOARD_H
@@ -63,6 +68,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool control_brightness = false;
+bool blinking_caps = false;
+uint8_t blink_count = 0;
+uint16_t last_blink_time = 0;
+bool led_temp_state = false;
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (clockwise) {
@@ -82,12 +91,50 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return false;
 }
 
+void connection_toggle_indicator(void) {
+    blinking_caps = true;
+    blink_count = 6; // on + off per blink
+    last_blink_time = timer_read();
+    led_temp_state = host_keyboard_led_state().caps_lock;
+    led_update_ports((led_t){.caps_lock = led_temp_state});
+}
+
+void matrix_scan_user(void) {
+    if (blinking_caps && timer_elapsed(last_blink_time) > 300) {
+        led_temp_state = !led_temp_state;
+        led_update_ports((led_t){.caps_lock = led_temp_state});
+        last_blink_time = timer_read();
+        blink_count--;
+
+        if (blink_count == 0) {
+            blinking_caps = false;
+            led_update_ports(host_keyboard_led_state());
+        }
+    }
+}
+
+bool rgb_matrix_indicators_user(void) {
+    if (blinking_caps && !led_temp_state) {
+        for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
+            rgb_matrix_set_color(i, RGB_OFF);
+        }
+    }
+    return true;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case KC_CAPS:
+            if (record->event.pressed) {
+                blinking_caps = false;
+                led_update_ports(host_keyboard_led_state());
+            }
+            return true;
         case BT_TOG:
 #ifdef BLUETOOTH_ENABLE
             if (record->event.pressed) {
                 connection_set_host(connection_get_host() == CONNECTION_HOST_USB ? CONNECTION_HOST_BLUETOOTH : CONNECTION_HOST_USB);
+                connection_toggle_indicator();
             }
 #endif
             return false;
